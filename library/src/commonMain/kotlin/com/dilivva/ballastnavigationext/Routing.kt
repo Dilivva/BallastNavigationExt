@@ -24,7 +24,7 @@ typealias Navigator<T> = Router<T>
  * Destination composable
  * @param T [Route]
  * @param navigator [Router] created from [rememberRouter]
- * @param onNavigate callback denoting a destination invoked
+ * @param onNavigate callback invoked on a destination.
  * @param noDestination invoked when no route is found for a destination.
  * @param onDeviceBackPressed Optional, invoked when the device back navigation is called. Ignore if you
  * want it handled automatically. It automatically navigates to the previous screen if the backstack is greater
@@ -41,6 +41,7 @@ fun <T: Route> Destination(
     animateIn: AnimatedContentTransitionScope<T>.() -> ContentTransform = { defaultAnimateIn() },
     animateOut: AnimatedContentTransitionScope<T>.() -> ContentTransform = { defaultAnimateOut() }
 ){
+    DeepLinkHandler(navigator)
     val routerState: Backstack<T> by navigator.observeStates().collectAsState()
     var destinations by remember { mutableStateOf(0) }
     val close = closeApp()

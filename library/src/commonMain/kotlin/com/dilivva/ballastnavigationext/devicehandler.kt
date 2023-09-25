@@ -1,6 +1,11 @@
 package com.dilivva.ballastnavigationext
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import com.copperleaf.ballast.navigation.routing.Destination
+import com.copperleaf.ballast.navigation.routing.Route
+import com.copperleaf.ballast.navigation.routing.RouterContract
+import kotlinx.coroutines.delay
 
 
 /**
@@ -8,7 +13,24 @@ import androidx.compose.runtime.Composable
  * @param onBack callback for when the device back button is invoked.
  */
 @Composable
-expect fun BackNavHandler(onBack: () -> Unit)
+internal expect fun BackNavHandler(onBack: () -> Unit)
+
+
+/**
+ * Callback to close the app from Android
+ */
+@Composable
+internal expect fun closeApp(): () -> Unit
 
 @Composable
-expect fun closeApp(): () -> Unit
+internal expect fun <T: Route> DeepLinkHandler(navigator: Navigator<T>)
+
+@Composable
+internal fun <T: Route> NavigateToDeeplink(navigator: Navigator<T>, destination: Destination<T>?){
+    LaunchedEffect(destination){
+        if (destination != null && destination is Destination.Match) {
+            delay(50)
+            navigator.trySend(RouterContract.Inputs.GoToDestination(destination.originalDestinationUrl))
+        }
+    }
+}

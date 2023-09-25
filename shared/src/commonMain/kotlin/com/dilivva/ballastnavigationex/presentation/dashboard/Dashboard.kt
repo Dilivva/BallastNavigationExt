@@ -119,14 +119,14 @@ val messages = listOf(
 
 @Composable
 fun DashboardScreen(
-    email: String = ""
+    email: String = "Jason"
 ) {
-    DashboardContent()
+    DashboardContent(email)
 }
 
 @Composable
 fun DashboardContent(
-
+    email: String
 ) {
 
     Column(
@@ -134,7 +134,7 @@ fun DashboardContent(
             .fillMaxSize()
             .padding(20.dp)
     ) {
-        TopBar()
+        TopBar(email)
         LazyColumn(
             modifier = Modifier.weight(1f),
             reverseLayout = true,
@@ -149,7 +149,7 @@ fun DashboardContent(
 }
 
 @Composable
-private fun TopBar() {
+private fun TopBar(email: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -161,7 +161,7 @@ private fun TopBar() {
         )
         Column {
             Text(
-                "Jason",
+                email,
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
             )
             Text("online", style = MaterialTheme.typography.bodySmall)

@@ -6,10 +6,10 @@ import com.dilivva.ballastnavigationext.BaseRoute
 enum class MainRoute(
     override val route: String
 ): BaseRoute{
-    Home("/app/home"),
-    SignIn("/app/sign-in"),
-    SignUp("/app/sign-up"),
-    ForgotPassword("/app/forgot-password"),
-    Dashboard("/app/dashboard?email={?}"),
-    Profile("/app/dashboard/profile");
+    Home("/home"),
+    SignIn("/sign-in"),
+    SignUp("/sign-up"),
+    ForgotPassword("/forgot-password"),
+    Dashboard("/dashboard?email={?}"),
+    Profile("/profile");
 }

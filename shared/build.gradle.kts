@@ -26,6 +26,7 @@ kotlin {
         it.binaries.framework {
             baseName = "shared"
             isStatic = true
+            export(projects.library)
         }
     }
 

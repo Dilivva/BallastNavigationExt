@@ -16,8 +16,6 @@ import com.dilivva.ballastnavigationex.presentation.auth.SignInScreen
 import com.dilivva.ballastnavigationex.presentation.auth.SignUpScreen
 import com.dilivva.ballastnavigationex.presentation.dashboard.DashboardScreen
 import com.dilivva.ballastnavigationext.Destination
-import com.dilivva.ballastnavigationext.closeApp
-import com.dilivva.ballastnavigationext.navigateUp
 import com.dilivva.ballastnavigationext.rememberRouter
 
 
@@ -28,7 +26,6 @@ fun MainNavigation() {
     val navigator = rememberRouter(applicationScope, MainRoute.values()){
         if (isLoggedIn) MainRoute.Dashboard else MainRoute.Home
     }
-    val stopApp = closeApp()
 
     Destination(
         navigator = navigator,
@@ -50,13 +47,13 @@ fun MainNavigation() {
                 }
             }
         },
-        onDeviceBackPressed = {
-            if (it == MainRoute.Dashboard){
-                stopApp.invoke()
-            }else{
-                navigator.navigateUp()
-            }
-        }
+//        onDeviceBackPressed = {
+//            if (it == MainRoute.Dashboard){
+//                //close app
+//            }else{
+//                navigator.navigateUp()
+//            }
+//        }
     )
 
 }
