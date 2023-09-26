@@ -23,7 +23,6 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Bump version
-        uses: gradle/gradle-build-action@v2
         run: ./gradlew :library:incrementMajor
 
 
