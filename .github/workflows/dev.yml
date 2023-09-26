@@ -52,11 +52,11 @@ jobs:
 
       - name: Publish to Sonatype
         run:  > 
-          ./gradlew :library:publishAllPublicationsToMavenRepository 
-          -Penv=dev 
+          ./gradlew :library:publishAllPublicationsToMavenCentral 
+          -Penv=dev
           -PORG_GRADLE_PROJECT_mavenCentralUsername=${{ secrets.MAVEN_USERNAME }}
           -PORG_GRADLE_PROJECT_mavenCentralPassword=${{ secrets.MAVEN_PASSWORD }}
-          -PORG_GRADLE_PROJECT_signingInMemoryKey=${{ secrets.SIGNING_KEY }} 
+          -PORG_GRADLE_PROJECT_signingInMemoryKey=${{ secrets.SIGNING_KEY }}
           -PORG_GRADLE_PROJECT_signingInMemoryKeyPassword=${{ secrets.SIGNING_PASSWORD }}
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
