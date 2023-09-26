@@ -9,8 +9,8 @@ jobs:
     strategy:
       matrix:
         config: [
-          { target: android, os: ubuntu-latest, tasks: :library:testDebugUnitTest :library:testReleaseUnitTest, continueOnError: false },
-          { target: apple, os: macos-latest, tasks: :library:iosX64Test :library:iosSimulatorArm64Test, continueOnError: false }
+          { target: android, os: ubuntu-latest, tasks: library:testDebugUnitTest library:testReleaseUnitTest, continueOnError: false },
+          { target: apple, os: macos-latest, tasks: library:iosX64Test library:iosSimulatorArm64Test, continueOnError: false }
         ]
     runs-on: ${{ matrix.config.os }}
     name: Build ${{ matrix.config.target }}
