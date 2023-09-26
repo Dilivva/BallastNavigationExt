@@ -10,25 +10,33 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
+import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class NavigationExTests {
-    private val dispatcher = StandardTestDispatcher(TestCoroutineScheduler())
-    private val scope = TestScope(dispatcher)
+    private lateinit var dispatcher: TestDispatcher
+    private lateinit var scope: TestScope
     private lateinit var navigator: NavigationController<Screens>
     private lateinit var state: StateFlow<RouterContract.State<Screens>>
-    private val states = mutableListOf<RouterContract.State<Screens>>()
+    private lateinit var states: MutableList<RouterContract.State<Screens>>
 
     @BeforeTest
     fun setUp(){
+        dispatcher = StandardTestDispatcher(TestCoroutineScheduler())
+        scope = TestScope(dispatcher)
         navigator = NavigationController(scope, Screens.values()){ Screens.Home }
         state = navigator.observeStates()
+        states = mutableListOf()
+    }
+    @AfterTest
+    fun tearDown(){
         states.clear()
     }
 
@@ -38,10 +46,11 @@ class NavigationExTests {
         scope.launch(dispatcher){
             state.toList(states)
         }
+
         navigator.navigate(Screens.Login)
         navigator.navigate(Screens.SignUp)
-        val expected = listOf("/login","/sign-up")
         scope.runCurrent()
+        val expected = listOf("/login","/sign-up")
         val actual = states.last().backstack.map { it.originalDestinationUrl }
 
         assertEquals(expected = expected, actual = actual)
@@ -57,8 +66,10 @@ class NavigationExTests {
         navigator.navigate(Screens.Login)
         navigator.navigate(Screens.SignUp)
         navigator.navigateUp()
-        val expected = listOf("/home","/login")
+
         scope.runCurrent()
+
+        val expected = listOf("/home","/login")
         val actual = states.last().backstack.map { it.originalDestinationUrl }
 
         assertEquals(expected = expected, actual = actual)
@@ -74,9 +85,9 @@ class NavigationExTests {
         navigator.navigate(Screens.Profile){
             pathParameter("user","john").queryParameter("email","john@gmail.com")
         }
-        val expected = listOf("/login","/profile/john?email=john%40gmail%2Ecom")
         scope.runCurrent()
-        println("Destinations: $states")
+
+        val expected = listOf("/login","/profile/john?email=john%40gmail%2Ecom")
         val actual = states.last().backstack.map { it.originalDestinationUrl }
 
         assertEquals(expected = expected, actual = actual)
@@ -92,8 +103,9 @@ class NavigationExTests {
         navigator.navigate(Screens.Login)
         navigator.navigate(Screens.SignUp)
         navigator.navigateWithPop(Screens.Password, Screens.Home)
-        val expected = listOf("/home","/password")
         scope.runCurrent()
+
+        val expected = listOf("/home","/password")
         val actual = states.last().backstack.map { it.originalDestinationUrl }
 
         assertEquals(expected = expected, actual = actual)
@@ -109,8 +121,10 @@ class NavigationExTests {
         navigator.navigate(Screens.Login)
         navigator.navigate(Screens.SignUp)
         navigator.navigateWithPopAll(Screens.Password)
-        val expected = listOf("/password")
+
         scope.runCurrent()
+
+        val expected = listOf("/password")
         val actual = states.last().backstack.map { it.originalDestinationUrl }
 
         assertEquals(expected = expected, actual = actual)
