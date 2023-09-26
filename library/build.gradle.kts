@@ -45,6 +45,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.turbine)
             }
         }
         val androidMain by getting{
@@ -67,7 +68,7 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.S01, true)
     val versionFile = project.rootProject.file("version")
     val versionTxt = versionFile.readText().trimEnd()
-    val isDev = findProperty("ENV")?.equals("dev") ?: false
+    val isDev = findProperty("env")?.equals("dev") ?: false
     val version = if (isDev) versionTxt.plus("-SNAPSHOT") else versionTxt
 
     coordinates("com.dilivva.ballastnavigationext", "ballastnavigationext", version)
