@@ -1,0 +1,41 @@
+name: Production actions
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  release:
+    if: ${{ github.event_name != 'pull_request' }}
+    runs-on: macos-latest
+    needs:
+      - build
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Setup gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Bump version
+        uses: gradle/gradle-build-action@v2
+        run: ./gradlew :library:incrementMajor
+
+
+      - name: Publish to Sonatype
+        run:  >
+          ./gradlew :library:publishAllPublicationsToMavenRepository
+          -PORG_GRADLE_PROJECT_mavenCentralUsername=${{ secrets.MAVEN_USERNAME }}
+          -PORG_GRADLE_PROJECT_mavenCentralPassword=${{ secrets.MAVEN_PASSWORD }}
+          -PORG_GRADLE_PROJECT_signingInMemoryKey=${{ secrets.SIGNING_KEY }} 
+          -PORG_GRADLE_PROJECT_signingInMemoryKeyPassword=${{ secrets.SIGNING_PASSWORD }}
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
