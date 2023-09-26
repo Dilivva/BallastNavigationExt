@@ -20,8 +20,6 @@ class NavigationExTests {
         navigator.navigate(Screens.SignUp)
         runCurrent()
 
-        println("Scope: ${state.value}")
-
         val expected = listOf("/login","/sign-up")
         val actual = state.value.backstack.map { it.originalDestinationUrl }
 

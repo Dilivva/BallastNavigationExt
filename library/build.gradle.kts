@@ -66,7 +66,7 @@ android {
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.S01, true)
     val versionFile = project.rootProject.file("version")
-    val versionTxt = versionFile.readText()
+    val versionTxt = versionFile.readText().trimEnd()
     val isDev = findProperty("ENV")?.equals("dev") ?: false
     val version = if (isDev) versionTxt.plus("-SNAPSHOT") else versionTxt
 
