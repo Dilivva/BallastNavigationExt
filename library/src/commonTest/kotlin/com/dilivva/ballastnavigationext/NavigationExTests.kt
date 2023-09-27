@@ -14,6 +14,7 @@ class NavigationExTests {
     private suspend fun TurbineTestContext<RouterContract.State<Screens>>.getRoutes(): List<String>{
         return awaitItem().backstack.map { it.originalDestinationUrl }
     }
+
     @Test
     fun navigate_addScreenToStack() =  runTest{
         val navigator = NavigationController(backgroundScope, Screens.values()){ Screens.Home }
@@ -22,6 +23,7 @@ class NavigationExTests {
         state.test {
             navigator.navigate(Screens.Login)
             navigator.navigate(Screens.SignUp)
+
 
             assertEquals(expected = listOf(), actual = getRoutes())
             assertEquals(expected = listOf("/login"), actual = getRoutes())
@@ -35,6 +37,7 @@ class NavigationExTests {
     fun navigateUp_removeScreenFromStack() = runTest{
         val navigator = NavigationController(backgroundScope, Screens.values()){ Screens.Home }
         val state = navigator.observeStates()
+
         state.test {
             navigator.navigate(Screens.Home)
             navigator.navigate(Screens.Login)
@@ -46,8 +49,8 @@ class NavigationExTests {
             assertEquals(expected = listOf("/home","/login"), actual = getRoutes())
             assertEquals(expected = listOf("/home","/login", "/sign-up"), actual = getRoutes())
             assertEquals(expected = listOf("/home","/login"), actual = getRoutes())
-        }
 
+        }
     }
 
 
@@ -55,6 +58,7 @@ class NavigationExTests {
     fun navigate_addScreenToStackWithExtras() = runTest{
         val navigator = NavigationController(backgroundScope, Screens.values()){ Screens.Home }
         val state = navigator.observeStates()
+
         state.test{
             navigator.navigate(Screens.Login)
             navigator.navigate(Screens.Profile){
@@ -63,6 +67,8 @@ class NavigationExTests {
             assertEquals(expected = listOf(), actual = getRoutes())
             assertEquals(expected = listOf("/login"), actual = getRoutes())
             assertEquals(expected = listOf("/login","/profile/john?email=john%40gmail%2Ecom"), actual = getRoutes())
+
+            assertEquals(expected = listOf("/login","/profile/john?email=john%40gmail%2Ecom", "/home"), actual = getRoutes())
         }
 
     }
@@ -85,6 +91,7 @@ class NavigationExTests {
         }
     }
 
+
     @Test
     fun navigateWithPopAll_popAllScreens() = runTest{
         val navigator = NavigationController(backgroundScope, Screens.values()){ Screens.Home }
@@ -92,14 +99,13 @@ class NavigationExTests {
 
         state.test {
             navigator.navigate(Screens.Home)
-            navigator.navigate(Screens.Login)
             navigator.navigate(Screens.SignUp)
+            navigator.navigate(Screens.Login)
             navigator.navigateWithPopAll(Screens.Password)
-
             assertEquals(expected = listOf(), actual = getRoutes())
             assertEquals(expected = listOf("/home"), actual = getRoutes())
-            assertEquals(expected = listOf("/home","/login"), actual = getRoutes())
-            assertEquals(expected = listOf("/home","/login", "/sign-up"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/sign-up"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/sign-up","/login"), actual = getRoutes())
             assertEquals(expected = listOf("/password"), actual = getRoutes())
         }
 

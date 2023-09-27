@@ -46,6 +46,7 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.test)
                 implementation(libs.turbine)
+                implementation(libs.ballast.test)
             }
         }
         val androidMain by getting{

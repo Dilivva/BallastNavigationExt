@@ -46,6 +46,7 @@ koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = 
 
 ballast-core = { module = "io.github.copper-leaf:ballast-core", version.ref = "ballast" }
 ballast-navigation = { module = "io.github.copper-leaf:ballast-navigation", version.ref = "ballast" }
+ballast-test = { module = "io.github.copper-leaf:ballast-test", version.ref = "ballast" }
 
 
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }

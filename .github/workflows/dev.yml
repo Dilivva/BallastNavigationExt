@@ -9,11 +9,11 @@ jobs:
     strategy:
       matrix:
         config: [
-          { target: android, os: ubuntu-latest, tasks: testDebugUnitTest testReleaseUnitTest, continueOnError: true },
-          { target: apple, os: macos-latest, tasks: iosX64Test iosSimulatorArm64Test, continueOnError: true }
+          { target: android, os: macos-latest, tasks: testDebugUnitTest testReleaseUnitTest, continueOnError: true },
+          { target: ios, os: macos-latest, tasks: iosSimulatorArm64Test iosX64Test, continueOnError: true }
         ]
     runs-on: ${{ matrix.config.os }}
-    name: Build ${{ matrix.config.target }}
+    name: Build and test ${{ matrix.config.target }}
     steps:
       - uses: actions/checkout@v3
       - name: set up JDK 11
