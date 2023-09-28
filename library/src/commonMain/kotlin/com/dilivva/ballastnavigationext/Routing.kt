@@ -23,7 +23,7 @@ typealias Navigator<T> = Router<T>
 /**
  * Destination composable
  * @param T [Route]
- * @param navigator [Router] created from [rememberRouter]
+ * @param navigator [Router] created from [rememberNavigator]
  * @param onNavigate callback invoked on a destination.
  * @param noDestination invoked when no route is found for a destination.
  * @param onDeviceBackPressed Optional, invoked when the device back navigation is called. Ignore if you

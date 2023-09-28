@@ -46,10 +46,6 @@ jobs:
       - name: Setup gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Bump version
-        run: ./gradlew :library:incrementPatch
-
-
       - name: Publish to Sonatype
         run:  > 
           ./gradlew :library:publishAllPublicationsToMavenCentral 

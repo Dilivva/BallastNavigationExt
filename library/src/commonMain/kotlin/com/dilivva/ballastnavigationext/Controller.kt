@@ -58,7 +58,7 @@ internal class NavigationController<SCREEN>(
  * @return [Router] of type S (Screen)
  */
 @Composable
-fun <S> rememberRouter(
+fun <S> rememberNavigator(
     coroutineScope: CoroutineScope,
     screens: Array<S>,
     initialScreen: () -> S = { screens.first() }
