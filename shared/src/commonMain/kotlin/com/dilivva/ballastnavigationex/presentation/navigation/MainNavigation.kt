@@ -16,14 +16,14 @@ import com.dilivva.ballastnavigationex.presentation.auth.SignInScreen
 import com.dilivva.ballastnavigationex.presentation.auth.SignUpScreen
 import com.dilivva.ballastnavigationex.presentation.dashboard.DashboardScreen
 import com.dilivva.ballastnavigationext.Destination
-import com.dilivva.ballastnavigationext.rememberRouter
+import com.dilivva.ballastnavigationext.rememberNavigator
 
 
 @Composable
 fun MainNavigation() {
     var isLoggedIn by remember { mutableStateOf(false) }
     val applicationScope = rememberCoroutineScope()
-    val navigator = rememberRouter(applicationScope, MainRoute.values()){
+    val navigator = rememberNavigator(applicationScope, MainRoute.values()){
         if (isLoggedIn) MainRoute.Dashboard else MainRoute.Home
     }
 

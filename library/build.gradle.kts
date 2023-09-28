@@ -36,6 +36,7 @@ kotlin {
                 //put your multiplatform dependencies here
                 api(libs.ballast.core)
                 api(libs.ballast.navigation)
+                implementation(libs.kotlinx.coroutines)
                 implementation(compose.material)
                 implementation(compose.runtime)
                 implementation(compose.animation)
@@ -45,6 +46,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.turbine)
             }
         }
         val androidMain by getting{
@@ -66,8 +68,8 @@ android {
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.S01, true)
     val versionFile = project.rootProject.file("version")
-    val versionTxt = versionFile.readText()
-    val isDev = findProperty("ENV")?.equals("dev") ?: false
+    val versionTxt = versionFile.readText().trimEnd()
+    val isDev = findProperty("env")?.equals("dev") ?: false
     val version = if (isDev) versionTxt.plus("-SNAPSHOT") else versionTxt
 
     coordinates("com.dilivva.ballastnavigationext", "ballastnavigationext", version)

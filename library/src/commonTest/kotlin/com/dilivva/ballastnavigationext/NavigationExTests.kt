@@ -1,120 +1,119 @@
 package com.dilivva.ballastnavigationext
 
+import app.cash.turbine.TurbineTestContext
+import app.cash.turbine.test
 import com.copperleaf.ballast.navigation.routing.RouterContract
 import com.copperleaf.ballast.navigation.routing.pathParameter
 import com.copperleaf.ballast.navigation.routing.queryParameter
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestCoroutineScheduler
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class NavigationExTests {
-    private val dispatcher = StandardTestDispatcher(TestCoroutineScheduler())
-    private val scope = TestScope(dispatcher)
-    private lateinit var navigator: NavigationController<Screens>
-    private lateinit var state: StateFlow<RouterContract.State<Screens>>
-    private val states = mutableListOf<RouterContract.State<Screens>>()
 
-    @BeforeTest
-    fun setUp(){
-        navigator = NavigationController(scope, Screens.values()){ Screens.Home }
-        state = navigator.observeStates()
-        states.clear()
+    private suspend fun TurbineTestContext<RouterContract.State<Screens>>.getRoutes(): List<String>{
+        return awaitItem().backstack.map { it.originalDestinationUrl }
     }
 
-
     @Test
-    fun navigate_addScreenToStack() = runTest{
-        scope.launch(dispatcher){
-            state.toList(states)
-        }
-        navigator.navigate(Screens.Login)
-        navigator.navigate(Screens.SignUp)
-        val expected = listOf("/login","/sign-up")
-        scope.runCurrent()
-        val actual = states.last().backstack.map { it.originalDestinationUrl }
+    fun navigate_addScreenToStack() =  runTest{
+        val navigator = NavigationController(backgroundScope, Screens.values()){ Screens.Home }
+        val state = navigator.observeStates()
 
-        assertEquals(expected = expected, actual = actual)
-        scope.cancel()
+        state.test {
+            navigator.navigate(Screens.Login)
+            navigator.navigate(Screens.SignUp)
+
+
+            assertEquals(expected = listOf(), actual = getRoutes())
+            assertEquals(expected = listOf("/login"), actual = getRoutes())
+            assertEquals(expected = listOf("/login","/sign-up"), actual = getRoutes())
+
+            cancelAndIgnoreRemainingEvents()
+        }
+
     }
 
     @Test
     fun navigateUp_removeScreenFromStack() = runTest{
-        scope.launch(dispatcher){
-            state.toList(states)
-        }
-        navigator.navigate(Screens.Home)
-        navigator.navigate(Screens.Login)
-        navigator.navigate(Screens.SignUp)
-        navigator.navigateUp()
-        val expected = listOf("/home","/login")
-        scope.runCurrent()
-        val actual = states.last().backstack.map { it.originalDestinationUrl }
+        val navigator = NavigationController(backgroundScope, Screens.values()){ Screens.Home }
+        val state = navigator.observeStates()
 
-        assertEquals(expected = expected, actual = actual)
-        scope.cancel()
+        state.test {
+            navigator.navigate(Screens.Home)
+            navigator.navigate(Screens.Login)
+            navigator.navigate(Screens.SignUp)
+            navigator.navigateUp()
+
+            assertEquals(expected = listOf(), actual = getRoutes())
+            assertEquals(expected = listOf("/home"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/login"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/login", "/sign-up"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/login"), actual = getRoutes())
+
+            cancelAndIgnoreRemainingEvents()
+        }
     }
+
 
     @Test
     fun navigate_addScreenToStackWithExtras() = runTest{
-        scope.launch(dispatcher){
-            state.toList(states)
-        }
-        navigator.navigate(Screens.Login)
-        navigator.navigate(Screens.Profile){
-            pathParameter("user","john").queryParameter("email","john@gmail.com")
-        }
-        val expected = listOf("/login","/profile/john?email=john%40gmail%2Ecom")
-        scope.runCurrent()
-        println("Destinations: $states")
-        val actual = states.last().backstack.map { it.originalDestinationUrl }
+        val navigator = NavigationController(backgroundScope, Screens.values()){ Screens.Home }
+        val state = navigator.observeStates()
 
-        assertEquals(expected = expected, actual = actual)
-        scope.cancel()
+        state.test{
+            navigator.navigate(Screens.Login)
+            navigator.navigate(Screens.Profile){
+                pathParameter("user","john").queryParameter("email","john@gmail.com")
+            }
+            assertEquals(expected = listOf(), actual = getRoutes())
+            assertEquals(expected = listOf("/login"), actual = getRoutes())
+            assertEquals(expected = listOf("/login","/profile/john?email=john%40gmail%2Ecom"), actual = getRoutes())
+
+            assertEquals(expected = listOf("/login","/profile/john?email=john%40gmail%2Ecom", "/home"), actual = getRoutes())
+            cancelAndIgnoreRemainingEvents()
+        }
+
     }
 
     @Test
     fun navigateWithPop_popToParticularScreen() = runTest{
-        scope.launch(dispatcher){
-            state.toList(states)
-        }
-        navigator.navigate(Screens.Home)
-        navigator.navigate(Screens.Login)
-        navigator.navigate(Screens.SignUp)
-        navigator.navigateWithPop(Screens.Password, Screens.Home)
-        val expected = listOf("/home","/password")
-        scope.runCurrent()
-        val actual = states.last().backstack.map { it.originalDestinationUrl }
+        val navigator = NavigationController(backgroundScope, Screens.values()){ Screens.Home }
+        val state = navigator.observeStates()
+        state.test {
+            navigator.navigate(Screens.Home)
+            navigator.navigate(Screens.Login)
+            navigator.navigate(Screens.SignUp)
+            navigator.navigateWithPop(Screens.Password, Screens.Home)
 
-        assertEquals(expected = expected, actual = actual)
-        scope.cancel()
+            assertEquals(expected = listOf(), actual = getRoutes())
+            assertEquals(expected = listOf("/home"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/login"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/login", "/sign-up"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/password"), actual = getRoutes())
+            cancelAndIgnoreRemainingEvents()
+        }
     }
+
 
     @Test
     fun navigateWithPopAll_popAllScreens() = runTest{
-        scope.launch(dispatcher){
-            state.toList(states)
-        }
-        navigator.navigate(Screens.Home)
-        navigator.navigate(Screens.Login)
-        navigator.navigate(Screens.SignUp)
-        navigator.navigateWithPopAll(Screens.Password)
-        val expected = listOf("/password")
-        scope.runCurrent()
-        val actual = states.last().backstack.map { it.originalDestinationUrl }
+        val navigator = NavigationController(backgroundScope, Screens.values()){ Screens.Home }
+        val state = navigator.observeStates()
 
-        assertEquals(expected = expected, actual = actual)
-        scope.cancel()
+        state.test {
+            navigator.navigate(Screens.Home)
+            navigator.navigate(Screens.SignUp)
+            navigator.navigate(Screens.Login)
+            navigator.navigateWithPopAll(Screens.Password)
+            assertEquals(expected = listOf(), actual = getRoutes())
+            assertEquals(expected = listOf("/home"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/sign-up"), actual = getRoutes())
+            assertEquals(expected = listOf("/home","/sign-up","/login"), actual = getRoutes())
+            assertEquals(expected = listOf("/password"), actual = getRoutes())
+            cancelAndIgnoreRemainingEvents()
+        }
+
     }
 
 
