@@ -29,6 +29,7 @@ class NavigationExTests {
             assertEquals(expected = listOf("/login"), actual = getRoutes())
             assertEquals(expected = listOf("/login","/sign-up"), actual = getRoutes())
 
+            cancelAndIgnoreRemainingEvents()
         }
 
     }
@@ -50,6 +51,7 @@ class NavigationExTests {
             assertEquals(expected = listOf("/home","/login", "/sign-up"), actual = getRoutes())
             assertEquals(expected = listOf("/home","/login"), actual = getRoutes())
 
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -69,6 +71,7 @@ class NavigationExTests {
             assertEquals(expected = listOf("/login","/profile/john?email=john%40gmail%2Ecom"), actual = getRoutes())
 
             assertEquals(expected = listOf("/login","/profile/john?email=john%40gmail%2Ecom", "/home"), actual = getRoutes())
+            cancelAndIgnoreRemainingEvents()
         }
 
     }
@@ -88,6 +91,7 @@ class NavigationExTests {
             assertEquals(expected = listOf("/home","/login"), actual = getRoutes())
             assertEquals(expected = listOf("/home","/login", "/sign-up"), actual = getRoutes())
             assertEquals(expected = listOf("/home","/password"), actual = getRoutes())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -107,6 +111,7 @@ class NavigationExTests {
             assertEquals(expected = listOf("/home","/sign-up"), actual = getRoutes())
             assertEquals(expected = listOf("/home","/sign-up","/login"), actual = getRoutes())
             assertEquals(expected = listOf("/password"), actual = getRoutes())
+            cancelAndIgnoreRemainingEvents()
         }
 
     }

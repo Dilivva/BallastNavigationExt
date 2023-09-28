@@ -36,6 +36,7 @@ kotlin {
                 //put your multiplatform dependencies here
                 api(libs.ballast.core)
                 api(libs.ballast.navigation)
+                implementation(libs.kotlinx.coroutines)
                 implementation(compose.material)
                 implementation(compose.runtime)
                 implementation(compose.animation)
@@ -46,7 +47,6 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.test)
                 implementation(libs.turbine)
-                implementation(libs.ballast.test)
             }
         }
         val androidMain by getting{
