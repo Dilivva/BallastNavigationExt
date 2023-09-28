@@ -26,8 +26,7 @@ jobs:
 
       - name: Publish to Sonatype
         run:  >
-          ./gradlew :library:publishAllPublicationsToMavenCentral 
-          -Penv=dev
+          ./gradlew :library:publishAllPublicationsToMavenCentral
           -PmavenCentralUsername=${{ secrets.MAVEN_USERNAME }}
           -PmavenCentralPassword=${{ secrets.MAVEN_PASSWORD }}
           -PsigningInMemoryKey=${{ secrets.SIGNING_KEY }}
