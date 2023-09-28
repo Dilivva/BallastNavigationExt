@@ -171,7 +171,7 @@ is as follows
 ### iOS
 Define your URL scheme:
 
-![](../BallastNavigationExt/images/ios_url_scheme.png)
+![](images/ios_url_scheme.png)
 
 Lastly let the library handle the linking:
 ```swift
@@ -185,7 +185,14 @@ That's all!!
 ## Example screens
 Android:
 
+https://github.com/Dilivva/BallastNavigationExt/assets/61739400/67104fcf-8194-4b40-a6d0-7c249611fd47
+
+
 iOS:
+
+https://github.com/Dilivva/BallastNavigationExt/assets/61739400/4e5e05e5-a1ab-4768-9c07-33028916777a
+
+
 
 
 ## Acknowledgements
