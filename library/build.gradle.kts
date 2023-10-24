@@ -14,6 +14,8 @@ kotlin {
     targetHierarchy.default()
 
     androidTarget {
+        publishAllLibraryVariants()
+        publishLibraryVariantsGroupedByFlavor = true
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"
