@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.RouterContract
+import com.copperleaf.ballast.navigation.vm.Router
 import kotlinx.coroutines.delay
 
 
@@ -23,10 +24,10 @@ internal expect fun BackNavHandler(onBack: () -> Unit)
 internal expect fun closeApp(): () -> Unit
 
 @Composable
-internal expect fun <T: Route> DeepLinkHandler(navigator: Navigator<T>)
+internal expect fun <T: Route> DeepLinkHandler(navigator: Router<T>)
 
 @Composable
-internal fun <T: Route> NavigateToDeeplink(navigator: Navigator<T>, destination: Destination<T>?){
+internal fun <T: Route> NavigateToDeeplink(navigator: Router<T>, destination: Destination<T>?){
     LaunchedEffect(destination){
         if (destination != null && destination is Destination.Match) {
             delay(50)

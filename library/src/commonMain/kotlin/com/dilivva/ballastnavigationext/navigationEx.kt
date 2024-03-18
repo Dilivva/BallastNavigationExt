@@ -14,6 +14,7 @@ import com.copperleaf.ballast.navigation.routing.directions
  * For more information see [Navigation](https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/#step-4-navigate).
  *
  */
+@Deprecated(message = "This will be removed in upcoming release", level = DeprecationLevel.WARNING)
 fun <T: Route> Navigator<T>.navigate(
     destination: T,
     extras: Destination.Directions<T>.() -> Destination.Directions<T> = { this }
@@ -27,6 +28,12 @@ fun <T: Route> Navigator<T>.navigate(
  * Navigate up
  * @param T
  */
+@Deprecated(message = "This will be removed in upcoming release", level = DeprecationLevel.WARNING,
+    replaceWith = ReplaceWith(
+        "trySend(RouterContract.Inputs.GoBack())",
+        "com.copperleaf.ballast.navigation.routing.RouterContract"
+    )
+)
 fun <T: Route> Navigator<T>.navigateUp(){
     trySend(RouterContract.Inputs.GoBack())
 }
@@ -39,6 +46,7 @@ fun <T: Route> Navigator<T>.navigateUp(){
  * For more information, see [more](https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/#query-parameter-format).
  *
  */
+@Deprecated(message = "This will be removed in upcoming release", level = DeprecationLevel.WARNING)
 fun <T: Route> Navigator<T>.navigateWithPop(
     destination: T,
     popUpTo: T,
@@ -54,6 +62,7 @@ fun <T: Route> Navigator<T>.navigateWithPop(
  * @param extras: For more data to be passed, e.g query params or path params
  * For more information, see [more](https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/#query-parameter-format).
  */
+@Deprecated(message = "This will be removed in upcoming release", level = DeprecationLevel.WARNING)
 fun <T: Route> Navigator<T>.navigateWithPopAll(
     destination: T,
     extras: Destination.Directions<T>.() -> Destination.Directions<T> = { this }

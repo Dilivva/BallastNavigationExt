@@ -1,73 +1,45 @@
-@file:Suppress("UnstableApiUsage","unused")
-
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     alias(libs.plugins.kotlinMpp)
     alias(libs.plugins.androidLib)
-    alias(libs.plugins.composeMultiplatform)
     id("com.vanniktech.maven.publish").version("0.25.3")
 }
 
+@OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     applyDefaultHierarchyTemplate()
-
+    jvm()
     androidTarget {
-        publishAllLibraryVariants()
-        publishLibraryVariantsGroupedByFlavor = true
         compilations.all {
             kotlinOptions {
                 jvmTarget = "1.8"
             }
         }
     }
-
+    
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "BallastNavigationExt"
+            baseName = "annotation"
         }
     }
+
     sourceSets {
-        commonMain.dependencies {
-            api(libs.ballast.core)
-            api(libs.ballast.navigation)
-            implementation(libs.kotlinx.coroutines)
-            implementation(compose.material)
-            implementation(compose.runtime)
-            implementation(compose.animation)
-            if (findProperty("env") != null){
-                val versionFile = project.rootProject.file("version")
-                val versionTxt = versionFile.readText().trimEnd()
-                val isDev = findProperty("env")?.equals("dev") ?: false
-                val version = if (isDev) versionTxt.plus("-SNAPSHOT") else versionTxt
-                api("com.dilivva.ballastnavigationext:annotation:$version")
-            }else {
-                api(projects.annotation)
-            }
-        }
-        commonTest.dependencies {
-            implementation(kotlin("test"))
-            implementation(libs.kotlinx.coroutines.test)
-            implementation(libs.turbine)
-        }
-        androidMain.dependencies {
-            implementation(libs.activity.compose)
-        }
+
     }
 }
 
 android {
-    namespace = "com.dilivva.ballastnavigationext"
+    namespace = "com.dilivva.ballastnavigationext.annotation"
     compileSdk = 33
     defaultConfig {
-        minSdk = 25
+        minSdk = 24
     }
 }
-
 
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.S01, true)
@@ -76,7 +48,7 @@ mavenPublishing {
     val isDev = findProperty("env")?.equals("dev") ?: false
     val version = if (isDev) versionTxt.plus("-SNAPSHOT") else versionTxt
 
-    coordinates("com.dilivva.ballastnavigationext", "ballastnavigationext", version)
+    coordinates("com.dilivva.ballastnavigationext", "annotation", version)
 
     pom{
         name.set("Ballast Navigation Extension")

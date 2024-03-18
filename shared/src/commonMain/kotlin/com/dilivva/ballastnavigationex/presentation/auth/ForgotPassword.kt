@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.copperleaf.ballast.navigation.vm.Router
 import com.dilivva.ballastnavigationex.presentation.components.BneButton
 import com.dilivva.ballastnavigationex.presentation.navigation.MainRoute
-import com.dilivva.ballastnavigationext.navigateUp
 
 @Composable
 fun ForgotPasswordScreen(
@@ -31,7 +30,7 @@ fun ForgotPasswordScreen(
 ){
     ForgotPasswordContent(
         forgotPassWord = {},
-        onBack = { router.navigateUp() }
+        onBack = {  }
     )
 }
 

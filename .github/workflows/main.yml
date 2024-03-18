@@ -21,7 +21,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Bump version
-        run: ./gradlew :library:incrementPatch
+        run: ./gradlew incrementMajor
 
 
       - name: Publish to Sonatype
