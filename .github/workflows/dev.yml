@@ -25,6 +25,9 @@ jobs:
       - name: Setup gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: KSP generator
+        run: ./gradlew :shared:kspCommonMainKotlinMetadata
+
       - name: Test ${{ matrix.config.target }} targets
         continue-on-error: ${{ matrix.config.continueOnError }}
         run: ./gradlew :library:${{ matrix.config.tasks }}

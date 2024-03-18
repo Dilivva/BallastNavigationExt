@@ -81,6 +81,10 @@ fun MainNavigation() {
                     controller.navigate(Screen.Settings)
                 }
                 is Screen.Settings -> TestScreen(Color.Magenta, "Settings"){
+                    controller.navigate(Screen.Profile("a4c7b1b0-31a3-4541-9f65-f047f3ed3d02"))
+                }
+
+                is Screen.Profile -> TestScreen(Color.DarkGray, it.id){
                     controller.navigateUp()
                 }
             }

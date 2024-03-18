@@ -27,5 +27,6 @@ sealed class Screen{
     data class PostList(val sort: String?): Screen()
 
     data object Settings: Screen()
+    data class Profile(val id: String): Screen()
 
 }
