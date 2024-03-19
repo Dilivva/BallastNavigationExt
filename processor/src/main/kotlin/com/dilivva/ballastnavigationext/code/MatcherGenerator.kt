@@ -23,7 +23,7 @@ class MatcherGenerator(
         return buildString {
             append("private fun <S: Route> match${route.name}(match: Destination.Match<S>): $parentName.${route.name} = with(match) {").appendLine()
             route.parameters.forEach {
-                val queryType = if (it.isNullable) "optionalStringQuery(\"${it.name}\")" else "stringQuery(\"${it.name}\")"
+                val queryType = parameters(it)
                 append("    val ${it.name} by $queryType").appendLine()
             }
             if (route.parameters.isNotEmpty()) {
@@ -33,5 +33,12 @@ class MatcherGenerator(
             }
             append("}")
         }
+    }
+
+    private fun parameters(parameters: Parameters): String{
+        val type = parameters.type.lowercase()
+        val optional = "optional${type.replaceFirstChar { it.uppercase() }}Query(\"${parameters.name}\")"
+        val query = type.plus("Query(\"${parameters.name}\")")
+        return if (parameters.isNullable) optional else query
     }
 }

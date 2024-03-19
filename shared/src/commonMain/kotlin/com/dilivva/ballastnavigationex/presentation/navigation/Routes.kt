@@ -23,10 +23,16 @@ sealed class Screen{
 
     data class Login(val email: String?): Screen()
 
-    data class PostDetails(val postId: String): Screen()
-    data class PostList(val sort: String?): Screen()
+    data class PostDetails(val postId: Int, val postCount: Double?): Screen()
+    data class PostList(val sort: String?, val query: Long?): Screen()
 
     data object Settings: Screen()
-    data class Profile(val id: String): Screen()
+    data class Profile(
+        val id: Int,
+        val uuid: String,
+        val isAdmin: Boolean,
+        val height: Double,
+        val balance: Float
+    ): Screen()
 
 }

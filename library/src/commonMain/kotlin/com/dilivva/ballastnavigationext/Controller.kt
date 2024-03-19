@@ -100,7 +100,18 @@ interface Controller<S, R> where R: Route{
      */
     fun popUntil(inclusive: Boolean, destination: S)
 
+    /**
+     * Used internally by the library.
+     * It implements the mapping of route to Screen
+     * @param match [Destination.Match]
+     * @param appScreen [R]
+     */
     fun matchRoute(match: Destination.Match<R>,appScreen: R): S
 
 
+    /**
+     * Provide CompositionLocal object of the controller
+     */
+    @Composable
+    fun provider(block: @Composable () -> Unit)
 }

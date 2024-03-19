@@ -87,7 +87,6 @@ fun <T: Route> Destination(
     }
 }
 
-
 /**
  * Destination composable that ties everything together
  * @param controller [Controller]
@@ -107,7 +106,7 @@ fun <S, R> Destination(
     onDeviceBackPressed: ((S) -> Unit)? = null,
     animateIn: AnimatedContentTransitionScope<R>.() -> ContentTransform = { defaultAnimateIn() },
     animateOut: AnimatedContentTransitionScope<R>.() -> ContentTransform = { defaultAnimateOut() }
-) where R: Route {
+) where R: Route, S: Any {
     val router = controller.getRouter()
     DeepLinkHandler(router)
     val routerState: Backstack<R> by router.observeStates().collectAsState()
@@ -121,25 +120,26 @@ fun <S, R> Destination(
         }
     }
 
-    routerState.renderCurrentDestination(
-        route = { appScreen: R ->
-            AnimatedContent(
-                targetState = appScreen,
-                transitionSpec = {
-                    if (isEnterDirection){
-                        animateIn()
-                    }else{
-                        animateOut()
+    controller.provider {
+        routerState.renderCurrentDestination(
+            route = { appScreen: R ->
+                AnimatedContent(
+                    targetState = appScreen,
+                    transitionSpec = {
+                        if (isEnterDirection){
+                            animateIn()
+                        }else{
+                            animateOut()
+                        }
                     }
+                ) { state ->
+                    val screen = remember(state) {  controller.matchRoute(this@renderCurrentDestination, state) }
+                    onNavigate(screen)
                 }
-            ) { state ->
-                val screen = remember(state) {  controller.matchRoute(this@renderCurrentDestination, state) }
-                onNavigate(screen)
-            }
-        },
-        notFound = noDestination,
-    )
-
+            },
+            notFound = noDestination,
+        )
+    }
 
     BackNavHandler {
         if (onDeviceBackPressed != null){

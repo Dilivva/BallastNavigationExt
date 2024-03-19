@@ -68,24 +68,40 @@ fun MainNavigation() {
     }
 
 
-
     Destination(
         controller,
         onNavigate = {
+            val navigator = LocalController.current
             when(it){
-                is Screen.Home -> TestScreen(Color.Black, "Home"){ controller.navigate(Screen.Login(email = "jazzedayo@gmail.com")) }
-                is Screen.Login -> TestScreen(Color.Blue, "Login, Email: ${it.email}"){ controller.navigate(Screen.PostDetails(postId = "12345")) }
-                is Screen.PostDetails -> TestScreen(Color.Red, "PostDetails, PostId: ${it.postId}"){ controller.navigate(Screen.PostList(sort = null)) }
+                is Screen.Home -> {
+                    TestScreen(Color.Black, "Home"){ controller.navigate(Screen.Login(email = "jazzedayo@gmail.com")) }
+                }
+                is Screen.Login -> {
+                    TestScreen(Color.Blue, "Login, Email: ${it.email}"){
+                        navigator.navigate(Screen.PostDetails(postId = 12345, postCount = null))
+                    }
+                }
+                is Screen.PostDetails -> {
+                    TestScreen(Color.Red, "PostDetails, PostId: ${it.postId}"){
+                        navigator.navigate(Screen.PostList(sort = "desc", query = 2))
+                    }
+                }
                 is Screen.PostList -> TestScreen(Color.Cyan,  "PostList, Sort: ${it.sort}"){
-                    controller.popUntil(false, Screen.Home)
-                    controller.navigate(Screen.Settings)
+                    navigator.popUntil(false, Screen.Home)
+                    navigator.navigate(Screen.Settings)
                 }
                 is Screen.Settings -> TestScreen(Color.Magenta, "Settings"){
-                    controller.navigate(Screen.Profile("a4c7b1b0-31a3-4541-9f65-f047f3ed3d02"))
+                    navigator.navigate(Screen.Profile(
+                        id = 3196,
+                        uuid = "4525ad8f-220c-4d35-9dc1-c43611726862",
+                        isAdmin = true,
+                        height = 24.429,
+                        balance = .252f
+                    ))
                 }
 
-                is Screen.Profile -> TestScreen(Color.DarkGray, it.id){
-                    controller.navigateUp()
+                is Screen.Profile -> TestScreen(Color.DarkGray, "${it.id}\n${it.uuid}\n${it.height}\n${it.isAdmin}\n${it.balance}"){
+                    navigator.navigateUp()
                 }
             }
         },

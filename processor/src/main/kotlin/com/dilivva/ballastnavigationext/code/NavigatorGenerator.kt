@@ -7,6 +7,7 @@ class NavigatorGenerator(
 ): Generator {
     override fun generate(): String {
         return buildString {
+            append(compositionLocal()).appendLine().appendLine().appendLine()
             append(header()).appendLine().appendLine()
             append(routerFunc()).appendLine().appendLine()
             append(navigateFunction()).appendLine().appendLine()
@@ -20,6 +21,9 @@ class NavigatorGenerator(
         }
     }
 
+    private fun compositionLocal(): String{
+        return "val LocalController = staticCompositionLocalOf<${parentName}Controller> { error(\"No controller created\") }"
+    }
     private fun header(): String{
         return "public class ${parentName}Controller(private val router: Router<$enumFileName>): Controller<$parentName,$enumFileName>{"
     }
@@ -45,6 +49,13 @@ class NavigatorGenerator(
             append("override fun popUntil(inclusive: Boolean, destination: $parentName) {").appendLine()
             append("   val route = getScreen(destination)").appendLine()
             append("   router.trySend(RouterContract.Inputs.PopUntilRoute(inclusive = inclusive, route = route))").appendLine()
+            append("}").appendLine().appendLine()
+
+            append("@Composable").appendLine()
+            append("override fun provider(block: @Composable () -> Unit) {").appendLine()
+            append("    CompositionLocalProvider(LocalController provides this){").appendLine()
+            append("        block()").appendLine()
+            append("    }").appendLine()
             append("}")
         }
     }
@@ -94,7 +105,7 @@ class NavigatorGenerator(
             routes.forEach {
                 if (it.parameters.isNotEmpty()){
                     append("private fun ${it.name.lowercase()}Route(${getParameters(it.parameters)}): String{").appendLine()
-                    append("    return ${enumFileName}.${it.name}.directions().let{ it. ")
+                    append("    return ${enumFileName}.${it.name}.directions().let{ it.")
                     append(getParametersForQuery(it.parameters))
                     append(" }.build()").appendLine()
                     append("}").appendLine()

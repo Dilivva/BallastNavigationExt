@@ -76,11 +76,11 @@ class BallastProcessor(private val environment: SymbolProcessorEnvironment) : Sy
     }
 
     private fun processOtherRoutes(parent: KSClassDeclaration, clazz: KSClassDeclaration){
-        val primitives = setOf("String","Int","Boolean","Long")
+        val primitives = setOf("String","Int","Boolean","Long","Double","Float")
         val params = clazz.getDeclaredProperties()
         val isParametersPrimitives = params.all { primitives.contains(it.type.toString()) }
         if (!isParametersPrimitives){
-            environment.logger.error("You can only pass primitives as arguments")
+            environment.logger.error("You can only pass primitives as arguments: ${clazz.simpleName.asString()}")
             return
         }
 
