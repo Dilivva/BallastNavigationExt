@@ -1,13 +1,13 @@
 [versions]
-kotlin = "1.9.20"
-compose-multiplatform = "1.5.12"
+kotlin = "1.9.23"
+compose-multiplatform = "1.6.1"
 kotlinx-coroutines = "1.7.1"
 androidPlugins = "8.1.4"
 koin = "3.4.0"
 androidViewModel = "2.6.1"
 activity-compose = "1.7.2"
 
-compose-compiler = "1.5.4"
+compose-compiler = "1.5.5"
 ballast = "4.1.0"
 
 minSdk = "25"
@@ -20,7 +20,7 @@ espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.6.1"
 compose-bom = "2023.10.01"
 turbine = "1.0.0"
-ksp = "1.9.20-1.0.14"
+ksp = "1.9.23-1.0.19"
 poet = "1.15.3"
 
 [plugins]
