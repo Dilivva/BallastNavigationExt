@@ -1,20 +1,9 @@
 package com.dilivva.ballastnavigationex.presentation.navigation
 
 
-import com.dilivva.ballastnavigationext.BaseRoute
 import com.dilivva.ballastnavigationext.annotation.InitialRoute
 import com.dilivva.ballastnavigationext.annotation.Routes
 
-enum class MainRoute(
-    override val route: String
-): BaseRoute{
-    Home("/home"),
-    SignIn("/sign-in"),
-    SignUp("/sign-up"),
-    ForgotPassword("/forgot-password"),
-    Dashboard("/dashboard?email={?}"),
-    Profile("/profile");
-}
 
 @Routes
 sealed class Screen{
