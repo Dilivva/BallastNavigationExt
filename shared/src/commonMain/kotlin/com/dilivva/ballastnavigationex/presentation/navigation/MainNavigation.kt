@@ -41,7 +41,9 @@ fun MainNavigation() {
                 }
                 is Screen.Login -> {
                     SignInScreen {
-
+                        if (!it){
+                            navigator.navigateUp()
+                        }
                     }
                 }
                 is Screen.PostDetails -> {

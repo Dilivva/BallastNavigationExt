@@ -48,7 +48,7 @@ fun SignInScreen(onLogged: (Boolean) -> Unit){
                 onLogged(true)
             }
         },
-        onBack = {  }
+        onBack = { onLogged(false) }
     )
 }
 

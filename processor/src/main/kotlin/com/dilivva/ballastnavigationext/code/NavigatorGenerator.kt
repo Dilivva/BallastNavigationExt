@@ -144,8 +144,8 @@ class NavigatorGenerator(
         return buildString {
             append("@Composable").appendLine()
             append("fun rememberController(scope: CoroutineScope, initialRoute: (() -> $parentName)? = null): Controller<$parentName,$enumFileName>{").appendLine()
-            append("   val initial = initialRoute?.invoke()?.toRoute()").appendLine()
-            append("   val router = createRouter(scope, initial)").appendLine()
+            append("   val initial = remember(initialRoute) { initialRoute?.invoke()?.toRoute() }").appendLine()
+            append("   val router = remember(scope, initial) { createRouter(scope, initial) }").appendLine()
             append("  return remember(router) { ${parentName}Controller(router) }").appendLine()
             append("}")
         }
