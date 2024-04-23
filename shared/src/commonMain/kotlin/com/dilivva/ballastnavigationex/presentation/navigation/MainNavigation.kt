@@ -17,47 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import com.dilivva.ballastnavigationex.presentation.auth.SignInScreen
 import com.dilivva.ballastnavigationext.Destination
 
 
-//@Composable
-//fun MainNavigation() {
-//    var isLoggedIn by remember { mutableStateOf(false) }
-//    val applicationScope = rememberCoroutineScope()
-//    val navigator = rememberNavigator(applicationScope, MainRoute.values()){
-//        if (isLoggedIn) MainRoute.Dashboard else MainRoute.Home
-//    }
-//
-//    Destination(
-//        navigator = navigator,
-//        onNavigate = {
-//            when (it) {
-//                MainRoute.Home -> HomeScreen(navigator)
-//                MainRoute.SignIn -> SignInScreen(navigator){ isAuthed ->
-//                    isLoggedIn = isAuthed
-//                }
-//                MainRoute.SignUp -> SignUpScreen(navigator)
-//                MainRoute.ForgotPassword -> ForgotPasswordScreen(navigator)
-//                MainRoute.Dashboard -> {
-//                    //Passing data between screens
-//                    val email by optionalStringQuery("email")
-//                    DashboardScreen(email.orEmpty())
-//                }
-//                MainRoute.Profile -> {
-//                    Box(modifier = Modifier.fillMaxSize())
-//                }
-//            }
-//        },
-////        onDeviceBackPressed = {
-////            if (it == MainRoute.Dashboard){
-////                //close app
-////            }else{
-////                navigator.navigateUp()
-////            }
-////        }
-//    )
-//
-//}
 
 @Composable
 fun MainNavigation() {
@@ -77,8 +40,8 @@ fun MainNavigation() {
                     TestScreen(Color.Black, "Home"){ controller.navigate(Screen.Login(email = "jazzedayo@gmail.com")) }
                 }
                 is Screen.Login -> {
-                    TestScreen(Color.Blue, "Login, Email: ${it.email}"){
-                        navigator.navigate(Screen.PostDetails(postId = 12345, postCount = null))
+                    SignInScreen {
+
                     }
                 }
                 is Screen.PostDetails -> {

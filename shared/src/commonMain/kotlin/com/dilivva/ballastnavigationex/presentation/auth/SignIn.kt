@@ -35,28 +35,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.copperleaf.ballast.navigation.routing.queryParameter
-import com.copperleaf.ballast.navigation.vm.Router
 import com.dilivva.ballastnavigationex.presentation.components.BneButton
-import com.dilivva.ballastnavigationex.presentation.navigation.MainRoute
 import com.dilivva.ballastnavigationex.presentation.theme.Fonts
-import com.dilivva.ballastnavigationext.navigate
-import com.dilivva.ballastnavigationext.navigateUp
 
 @Composable
-fun SignInScreen(router: Router<MainRoute>, onLogged: (Boolean) -> Unit){
+fun SignInScreen(onLogged: (Boolean) -> Unit){
     SignInContent(
-        createAccount = { router.navigate(MainRoute.SignUp) },
-        forgotPassword = { router.navigate(MainRoute.ForgotPassword) },
+        createAccount = {  },
+        forgotPassword = {  },
         signIn = {  email, password ->
             if (email.isNotEmpty() && password.isNotEmpty()){
                 onLogged(true)
-                router.navigate(MainRoute.Dashboard){
-                    queryParameter("email", email)
-                }
             }
         },
-        onBack = { router.navigateUp() }
+        onBack = {  }
     )
 }
 

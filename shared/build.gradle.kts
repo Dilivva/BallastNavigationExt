@@ -40,7 +40,7 @@ kotlin {
                 implementation(compose.animation)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                implementation(projects.library)
+                api(projects.library)
             }
         }
         val commonTest by getting {
