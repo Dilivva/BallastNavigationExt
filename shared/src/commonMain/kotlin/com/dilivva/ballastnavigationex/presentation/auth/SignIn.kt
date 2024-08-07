@@ -36,15 +36,19 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dilivva.ballastnavigationex.presentation.components.BneButton
+import com.dilivva.ballastnavigationex.presentation.navigation.LocalController
+import com.dilivva.ballastnavigationex.presentation.navigation.Screen
 import com.dilivva.ballastnavigationex.presentation.theme.Fonts
 
 @Composable
-fun SignInScreen(onLogged: (Boolean) -> Unit){
+fun SignInScreen(email: String, onLogged: (Boolean) -> Unit){
+    val navigator = LocalController.current
     SignInContent(
-        createAccount = {  },
-        forgotPassword = {  },
-        signIn = {  email, password ->
-            if (email.isNotEmpty() && password.isNotEmpty()){
+        email = email,
+        createAccount = { navigator.navigate(Screen.PostDetails(postId = 2, postCount = null)) },
+        forgotPassword = { navigator.navigate(Screen.Settings) },
+        signIn = {  mail, password ->
+            if (mail.isNotEmpty() && password.isNotEmpty()){
                 onLogged(true)
             }
         },
@@ -54,12 +58,13 @@ fun SignInScreen(onLogged: (Boolean) -> Unit){
 
 @Composable
  fun SignInContent(
+    email: String,
     createAccount: () -> Unit,
     forgotPassword: () -> Unit,
     signIn: (String, String) -> Unit,
     onBack: () -> Unit
 ){
-    var email by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf(email) }
     var password by remember { mutableStateOf("") }
 
         Column(

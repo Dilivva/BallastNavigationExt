@@ -8,7 +8,7 @@ android {
     compileSdk = 34
     defaultConfig {
         applicationId = "com.dilivva.ballastnavigationex"
-        minSdk = 25
+        minSdk = 24
         versionCode = 1
         versionName = "1.0"
     }

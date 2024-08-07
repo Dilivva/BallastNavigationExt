@@ -34,29 +34,28 @@ fun MainNavigation() {
     Destination(
         controller,
         onNavigate = {
-            val navigator = LocalController.current
             when(it){
                 is Screen.Home -> {
-                    TestScreen(Color.Black, "Home"){ controller.navigate(Screen.Login(email = "jazzedayo@gmail.com")) }
+                    TestScreen(Color.Blue, "Home"){ controller.navigate(Screen.Login("me@email.com")) }
                 }
                 is Screen.Login -> {
-                    SignInScreen {
+                    SignInScreen(it.email.orEmpty()) {
                         if (!it){
-                            navigator.navigateUp()
+                            controller.navigateUp()
                         }
                     }
                 }
                 is Screen.PostDetails -> {
                     TestScreen(Color.Red, "PostDetails, PostId: ${it.postId}"){
-                        navigator.navigate(Screen.PostList(sort = "desc", query = 2))
+                        controller.navigate(Screen.PostList(sort = "desc", query = 2))
                     }
                 }
                 is Screen.PostList -> TestScreen(Color.Cyan,  "PostList, Sort: ${it.sort}"){
-                    navigator.popUntil(false, Screen.Home)
-                    navigator.navigate(Screen.Settings)
+                    controller.popUntil(false, Screen.Home)
+                    controller.navigate(Screen.Settings)
                 }
                 is Screen.Settings -> TestScreen(Color.Magenta, "Settings"){
-                    navigator.navigate(Screen.Profile(
+                    controller.navigate(Screen.Profile(
                         id = 3196,
                         uuid = "4525ad8f-220c-4d35-9dc1-c43611726862",
                         isAdmin = true,
@@ -66,7 +65,7 @@ fun MainNavigation() {
                 }
 
                 is Screen.Profile -> TestScreen(Color.DarkGray, "${it.id}\n${it.uuid}\n${it.height}\n${it.isAdmin}\n${it.balance}"){
-                    navigator.navigateUp()
+                    controller.navigateUp()
                 }
             }
         },
