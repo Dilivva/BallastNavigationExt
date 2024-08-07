@@ -10,7 +10,7 @@ activity-compose = "1.7.2"
 compose-compiler = "1.5.5"
 ballast = "4.1.0"
 
-minSdk = "25"
+minSdk = "23"
 targetSdk = "34"
 compileSdk = "34"
 core-ktx = "1.12.0"
