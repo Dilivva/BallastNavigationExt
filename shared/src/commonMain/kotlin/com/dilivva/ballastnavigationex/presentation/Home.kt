@@ -19,16 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dilivva.ballastnavigationex.presentation.components.BneButton
-import com.dilivva.ballastnavigationex.presentation.navigation.MainRoute
 import com.dilivva.ballastnavigationex.presentation.theme.Fonts
-import com.dilivva.ballastnavigationext.Navigator
-import com.dilivva.ballastnavigationext.navigate
 
 
 @Composable
-fun HomeScreen(navigator: Navigator<MainRoute>){
+fun HomeScreen(){
     HomeContent{
-        navigator.navigate(MainRoute.SignIn)
+
     }
 }
 

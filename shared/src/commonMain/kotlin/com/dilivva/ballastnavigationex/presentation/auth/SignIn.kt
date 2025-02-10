@@ -35,39 +35,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.copperleaf.ballast.navigation.routing.queryParameter
-import com.copperleaf.ballast.navigation.vm.Router
 import com.dilivva.ballastnavigationex.presentation.components.BneButton
-import com.dilivva.ballastnavigationex.presentation.navigation.MainRoute
+import com.dilivva.ballastnavigationex.presentation.navigation.LocalController
+import com.dilivva.ballastnavigationex.presentation.navigation.Screen
 import com.dilivva.ballastnavigationex.presentation.theme.Fonts
-import com.dilivva.ballastnavigationext.navigate
-import com.dilivva.ballastnavigationext.navigateUp
 
 @Composable
-fun SignInScreen(router: Router<MainRoute>, onLogged: (Boolean) -> Unit){
+fun SignInScreen(email: String, onLogged: (Boolean) -> Unit){
+    val navigator = LocalController.current
     SignInContent(
-        createAccount = { router.navigate(MainRoute.SignUp) },
-        forgotPassword = { router.navigate(MainRoute.ForgotPassword) },
-        signIn = {  email, password ->
-            if (email.isNotEmpty() && password.isNotEmpty()){
+        email = email,
+        createAccount = { navigator.navigate(Screen.PostDetails(postId = 2, postCount = null)) },
+        forgotPassword = { navigator.navigate(Screen.Settings) },
+        signIn = {  mail, password ->
+            if (mail.isNotEmpty() && password.isNotEmpty()){
                 onLogged(true)
-                router.navigate(MainRoute.Dashboard){
-                    queryParameter("email", email)
-                }
             }
         },
-        onBack = { router.navigateUp() }
+        onBack = { onLogged(false) }
     )
 }
 
 @Composable
  fun SignInContent(
+    email: String,
     createAccount: () -> Unit,
     forgotPassword: () -> Unit,
     signIn: (String, String) -> Unit,
     onBack: () -> Unit
 ){
-    var email by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf(email) }
     var password by remember { mutableStateOf("") }
 
         Column(

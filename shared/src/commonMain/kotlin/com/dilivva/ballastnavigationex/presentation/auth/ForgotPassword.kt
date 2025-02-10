@@ -20,18 +20,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.copperleaf.ballast.navigation.vm.Router
 import com.dilivva.ballastnavigationex.presentation.components.BneButton
-import com.dilivva.ballastnavigationex.presentation.navigation.MainRoute
-import com.dilivva.ballastnavigationext.navigateUp
 
 @Composable
 fun ForgotPasswordScreen(
-    router: Router<MainRoute>
+
 ){
     ForgotPasswordContent(
         forgotPassWord = {},
-        onBack = { router.navigateUp() }
+        onBack = {  }
     )
 }
 

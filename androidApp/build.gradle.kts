@@ -8,7 +8,7 @@ android {
     compileSdk = 34
     defaultConfig {
         applicationId = "com.dilivva.ballastnavigationex"
-        minSdk = 25
+        minSdk = 24
         versionCode = 1
         versionName = "1.0"
     }
@@ -16,7 +16,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.2"
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
 //    packaging {
 //        resources {
@@ -39,6 +39,6 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(libs.compose.uitooling)
-    implementation(libs.compose.preview)
+    //implementation(libs.compose.uitooling)
+    //implementation(libs.compose.preview)
 }

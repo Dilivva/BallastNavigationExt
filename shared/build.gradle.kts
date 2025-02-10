@@ -2,13 +2,13 @@ plugins {
     alias(libs.plugins.kotlinMpp)
     alias(libs.plugins.androidLib)
     alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.kspPlugin)
+
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-    targetHierarchy.default()
-    iosArm64()
-    iosSimulatorArm64()
+    applyDefaultHierarchyTemplate()
 
     androidTarget {
         compilations.all {
@@ -32,6 +32,7 @@ kotlin {
 
     sourceSets {
         val commonMain by getting {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
             dependencies {
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
@@ -68,12 +69,22 @@ kotlin {
     }
 }
 
+dependencies {
+    add("kspCommonMainMetadata", project(":processor"))
+}
+
 android {
     namespace = "com.dilivva.ballastnavigationex"
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res", "src/commonMain/resources")
     compileSdk = 34
     defaultConfig {
-        minSdk = 25
+        minSdk = 23
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
     }
 }

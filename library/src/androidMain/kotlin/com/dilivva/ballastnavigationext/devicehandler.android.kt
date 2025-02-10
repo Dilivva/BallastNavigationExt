@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.UnmatchedDestination
+import com.copperleaf.ballast.navigation.vm.Router
 
 @Composable
 internal actual fun BackNavHandler(onBack: () -> Unit) = BackHandler(onBack = onBack)
@@ -22,7 +23,7 @@ internal actual fun closeApp(): () -> Unit{
 }
 
 @Composable
-internal actual fun <T: Route> DeepLinkHandler(navigator: Navigator<T>){
+internal actual fun <T: Route> DeepLinkHandler(navigator: Router<T>){
     val context = LocalContext.current
     val intent = (context as Activity).intent
     val uri: Uri? = intent.data

@@ -23,17 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.copperleaf.ballast.navigation.vm.Router
 import com.dilivva.ballastnavigationex.presentation.components.BneButton
-import com.dilivva.ballastnavigationex.presentation.navigation.MainRoute
-import com.dilivva.ballastnavigationext.navigateUp
 
 @Composable
-fun SignUpScreen(router: Router<MainRoute>){
+fun SignUpScreen(){
     SignUpContent(
         signUp = { name, email, password -> },
         signIn = {},
-        onBack = { router.navigateUp() }
+        onBack = {  }
     )
 
 }

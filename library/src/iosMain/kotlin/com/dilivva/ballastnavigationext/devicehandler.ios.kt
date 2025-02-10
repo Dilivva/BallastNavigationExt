@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.UnmatchedDestination
+import com.copperleaf.ballast.navigation.vm.Router
 
 //Stub for device back handler as the app handles back navigation
 @Composable
@@ -45,7 +46,7 @@ data class DeepLinkResult(val url: String? = null){
 }
 
 @Composable
-internal actual fun <T: Route> DeepLinkHandler(navigator: Navigator<T>){
+internal actual fun <T: Route> DeepLinkHandler(navigator: Router<T>){
     CompositionLocalProvider(LocalIosDeepLink provides deepLinkResult) {
         val deepLinkResult = LocalIosDeepLink.current
         val router = navigator.observeStates().collectAsState().value
