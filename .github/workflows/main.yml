@@ -24,6 +24,23 @@ jobs:
         run: ./gradlew incrementMajor
 
 
+      - name: Publish Annotation to Sonatype
+        run: >
+          ./gradlew :annotation:publishAllPublicationsToMavenCentral
+          -PmavenCentralUsername=${{ secrets.MAVEN_USERNAME }}
+          -PmavenCentralPassword=${{ secrets.MAVEN_PASSWORD }}
+          -PsigningInMemoryKey=${{ secrets.SIGNING_KEY }}
+          -PsigningInMemoryKeyPassword=${{ secrets.SIGNING_PASSWORD }}
+
+      - name: Publish Processor to Sonatype
+        run: >
+          ./gradlew :processor:publishAllPublicationsToMavenCentral
+          -PmavenCentralUsername=${{ secrets.MAVEN_USERNAME }}
+          -PmavenCentralPassword=${{ secrets.MAVEN_PASSWORD }}
+          -PsigningInMemoryKey=${{ secrets.SIGNING_KEY }}
+          -PsigningInMemoryKeyPassword=${{ secrets.SIGNING_PASSWORD }}
+      
+
       - name: Publish to Sonatype
         run:  >
           ./gradlew :library:publishAllPublicationsToMavenCentral
